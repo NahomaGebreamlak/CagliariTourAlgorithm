@@ -73,3 +73,38 @@ def calculate_route(request,numberofdays):
 
     # Return the main and optional itineraries as a JSON response
     return JsonResponse({"guide": main_itinerary, "optional_guide": optional_itinerary})
+
+
+
+
+
+def add_to_main_travel_list(request):
+    # Get parameters from the GET request
+    name = request.GET.get('name')
+    description = request.GET.get('description')
+    age = request.GET.get('age')
+    race = request.GET.get('race')
+
+    if name and description and age and race:
+        # retrain the model
+
+        # Return a success response with the added item
+        return JsonResponse({'success': True, 'message': 'Item added'})
+
+    else:
+        # Return an error response if any parameter is missing
+        return JsonResponse({'success': False, 'message': 'Missing parameters'}, status=400)
+
+
+def remove_from_main_travel_list(request):
+    # Get parameters from the GET request
+    name = request.GET.get('name')
+    age = request.GET.get('age')
+    race = request.GET.get('race')
+
+    if name and age and race:
+        # retrain the model
+        return JsonResponse({'success': True, 'message': 'Item removed'})
+    else:
+            # If no matching item was found
+            return JsonResponse({'success': False, 'message': 'Item not found'}, status=404)
