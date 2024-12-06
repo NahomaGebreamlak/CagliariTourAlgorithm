@@ -447,21 +447,16 @@ def calculate_route(request, numberofdays):
 
             # Sort the best_route by fitness score in descending order (highest fitness first)
             best_route.sort(key=lambda place: fitness_scores[place], reverse=True)
+            best_route = best_route[:len(time_slots)]
 
-            # Use the pre-calculated fitness scores to populate the itinerary
+            # Format this day's itinerary
             day_itinerary = {
-                "day": (datetime.today() + timedelta(days=day)).strftime("%d/%m/%Y"),
-                "POIs": [
-                    {
-                        "placeName": place.Name,
-                        "fitnessScore": str(fitness_scores[place])  # Use the pre-calculated fitness score
-                    }
-                    for place in best_route
-                ],
-                "visitTime": [
-                    f"{start}-{end}" for start, end in time_slots[:len(best_route)]
-                ],
-            }
+                            "day": (datetime.today() + timedelta(days=day)).strftime("%d/%m/%Y"),
+                            "POIs": [place.Name for place in best_route],
+                            "visitTime": [
+                                f"{start}-{end}" for start, end in time_slots[: len(best_route)]
+                            ],
+                        }
             main_itinerary.append(day_itinerary)
 
             # Update unvisited places
